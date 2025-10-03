@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:work4/ui/EmployeeListWidget.dart';
 import 'package:work4/ui/ReportsListWidget.dart';
 import 'package:work4/ui/TasksListWidget.dart';
 
@@ -19,7 +20,8 @@ class _MainScreenState extends State<MainScreen> {
     // список виджетов с контентом
     final List<Widget> pages = [
       TasksScreen(),
-      ReportsScreen()
+      ReportsScreen(),
+      EmployeeScreen()
     ];
     return Scaffold(
       appBar: AppBar(
