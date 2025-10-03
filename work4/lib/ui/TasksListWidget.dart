@@ -12,13 +12,16 @@ class TasksScreen extends StatefulWidget {
 
 class _TasksScreenState extends State<TasksScreen> {
   List<String> tasks = List.generate(40, (index) => 'Задача ${index + 1}');
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: tasks.map((task) => Text(task)).toList(),
+        children:
+        tasks.map((task) => GestureDetector(
+            onTap: () => setState(() => tasks.remove(task)),
+            child: Text(task)
+        )).toList(),
       )
     );
   }
