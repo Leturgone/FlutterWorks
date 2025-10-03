@@ -24,10 +24,7 @@ class _TasksScreenState extends State<TasksScreen> {
         tasks.map((task) => GestureDetector(
             key: ValueKey(task),
             onDoubleTap: () => setState(() => tasks.add('Задача ${counter = counter+1}')),
-            onTap: () => setState(() {
-              tasks.remove(task);
-              counter--;
-            }),
+            onTap: () => setState(() {tasks.remove(task);}),
             child: Text(task)
         )).toList(),
       ),

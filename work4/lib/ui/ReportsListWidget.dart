@@ -19,10 +19,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
       itemBuilder: (_,position) => GestureDetector(
         key: ValueKey(reports[position]),
         onDoubleTap: () => setState(() => reports.add('Отчет ${counter = counter+1}')),
-        onTap: () => setState(() {
-          reports.removeAt(position);
-          counter--;
-        }),
+        onTap: () => setState(() {reports.removeAt(position);}),
         child: Text(reports[position])),
       itemCount: reports.length,
     );

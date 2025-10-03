@@ -21,10 +21,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
       itemBuilder: (_,position) => GestureDetector(
           key: ValueKey(employees[position]),
           onDoubleTap: () => setState(() => employees.add('Сотрудник ${counter = counter+1}')),
-          onTap: () => setState(() {
-            employees.removeAt(position);
-            counter--;
-          }),
+          onTap: () => setState(() {employees.removeAt(position);}),
           child: Text(employees[position])),
       separatorBuilder: (_,_) => const Divider(),
       itemCount: employees.length,
