@@ -11,15 +11,15 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
-  List<String> tasks = ['Задача 1', 'Задача 2', 'Задача 3', 'Задача 4', 'Задача 5', 'Задача 6',
-    'Задача 7', 'Задача 8', 'Задача 9', 'Задача 10', 'Задача 11', 'Задача 12', 'Задача 13'
-  ];
+  List<String> tasks = List.generate(40, (index) => 'Задача ${index + 1}');
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: tasks.map((task) => Text(task)).toList(),
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: tasks.map((task) => Text(task)).toList(),
+      )
     );
   }
 }
