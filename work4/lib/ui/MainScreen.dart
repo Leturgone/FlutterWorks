@@ -43,11 +43,11 @@ class _MainScreenState extends State<MainScreen> {
             label: 'Задачи',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.looks_one),
+            icon: Icon(Icons.looks_two),
             label: 'Отчеты',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.looks_one),
+            icon: Icon(Icons.looks_3),
             label: 'Сотрудники',
           )
         ],
