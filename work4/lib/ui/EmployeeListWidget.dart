@@ -10,14 +10,17 @@ class EmployeeScreen extends StatefulWidget {
 }
 
 class _EmployeeScreenState extends State<EmployeeScreen> {
-  List<String> tasks = List.generate(40, (index) => 'Сотрудник ${index + 1}');
+  List<String> employees = List.generate(40, (index) => 'Сотрудник ${index + 1}');
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemBuilder: (_,position) => Text(tasks[position]),
+      itemBuilder: (_,position) => GestureDetector(
+          key: ValueKey(employees[position]),
+          onTap: () => setState(() => employees.removeAt(position)),
+          child: Text(employees[position])),
       separatorBuilder: (_,_) => const Divider(),
-      itemCount: tasks.length,
+      itemCount: employees.length,
     );
   }
 }
