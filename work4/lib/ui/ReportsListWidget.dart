@@ -10,13 +10,16 @@ class ReportsScreen extends StatefulWidget {
 }
 
 class _ReportsScreenState extends State<ReportsScreen> {
-  List<String> tasks = List.generate(40, (index) => 'Отчет ${index + 1}');
+  List<String> reports = List.generate(40, (index) => 'Отчет ${index + 1}');
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemBuilder: (_,position) => Text(tasks[position]),
-      itemCount: tasks.length,
+      itemBuilder: (_,position) => GestureDetector(
+        key: ValueKey(reports[position]),
+        onTap: () => setState(() => reports.removeAt(position)),
+        child: Text(reports[position])),
+      itemCount: reports.length,
     );
   }
 }
