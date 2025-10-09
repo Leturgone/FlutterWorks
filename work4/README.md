@@ -1,16 +1,9 @@
 # work4
+В качестве задания на практическую работу, студенту в индивидуальном порядке требуется 
+подготовить следующее задание:
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Студенту необходимо подготовить приложение, демонстрирующее на одном экране список 
+построенный на Widget-е Column, на втором на Widget-е ListView и на третьем Widget-е 
+ListView.separated. На каждом экране должна быть возможность добавить и удалить элемент в 
+список из приложения. Все данные должны быть обусловлены предметной областью приложения 
+студента. 
