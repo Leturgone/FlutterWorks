@@ -12,7 +12,7 @@ class ComicSeriesAboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ComicSeriesAboutWidget(series: series, onBack: onBack)
+      body: ComicSeriesAboutView(series: series, onBack: onBack)
     );
   }
 }

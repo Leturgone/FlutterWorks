@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:work5/features/comic_series/models/comic_series.dart';
 
-class ComicSeriesAboutWidget extends StatelessWidget {
+class ComicSeriesAboutView extends StatelessWidget {
   final ComicSeries series;
   final VoidCallback onBack;
 
-  const ComicSeriesAboutWidget({super.key, required this.series, required this.onBack});
+  const ComicSeriesAboutView({super.key, required this.series, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
