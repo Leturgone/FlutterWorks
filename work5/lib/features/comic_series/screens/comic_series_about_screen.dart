@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:work5/features/comic_series/widgets/comic_series_avout_view.dart';
+import 'package:work5/features/comic_series/widgets/comic_series_about_view.dart';
 
 import '../models/comic_series.dart';
 
