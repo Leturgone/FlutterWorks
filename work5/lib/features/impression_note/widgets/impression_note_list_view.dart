@@ -34,7 +34,7 @@ class ImpressionNoteListView extends StatelessWidget {
       itemCount: notes.length,
       itemBuilder: (context, index) {
         final note = notes[index];
-        return ImpressionNoteTile(note: note, onDelete: onDelete, onTap: onNoteTap,onEdit: onEdit);
+        return ImpressionNoteTile(key: ValueKey(note.id), note: note, onDelete: onDelete, onTap: onNoteTap,onEdit: onEdit);
       },
     );
   }
