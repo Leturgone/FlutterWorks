@@ -9,12 +9,12 @@ class ImpressionNoteTile extends StatelessWidget {
   final ValueChanged<ImpressionNote> onEdit;
 
   const ImpressionNoteTile({
-    Key? key,
+    super.key,
     required this.note,
     required this.onDelete,
     required this.onTap,
     required this.onEdit,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
