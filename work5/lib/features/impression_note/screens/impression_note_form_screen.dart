@@ -73,7 +73,7 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
                 child: TextField(
                   controller: _noteController,
                   decoration: InputDecoration(
-                    labelText: 'Впечатления',
+                    labelText: 'Впечатление',
                     border: OutlineInputBorder(),
                   ),
                   maxLines: null,

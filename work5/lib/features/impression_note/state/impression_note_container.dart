@@ -76,21 +76,21 @@ class _ImpressionNoteContainerState extends State<ImpressionNoteContainer> {
   }
 
   void _addImpressionNote(String description, String image) {
-    if (description.isEmpty) {
-      // Валидация: поле не должно быть пустым
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Пожалуйста, заполните поле "Впечатления".'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
     if (image.isEmpty){
       // Валидация: серия должна быть выбрана
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Пожалуйста, выберите серию.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    if (description.isEmpty) {
+      // Валидация: поле не должно быть пустым
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Пожалуйста, заполните поле "Впечатление".'),
           backgroundColor: Colors.red,
         ),
       );
@@ -114,7 +114,7 @@ class _ImpressionNoteContainerState extends State<ImpressionNoteContainer> {
       // Валидация: поле не должно быть пустым
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Пожалуйста, заполните поле "Впечатления".'),
+          content: Text('Пожалуйста, заполните поле "Впечатление".'),
           backgroundColor: Colors.red,
         ),
       );
