@@ -51,7 +51,7 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Форма заметки'),
+        title: Text('Форма заметки о впечатлении'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -73,7 +73,7 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
                 child: TextField(
                   controller: _noteController,
                   decoration: InputDecoration(
-                    labelText: 'Запись',
+                    labelText: 'Впечатления',
                     border: OutlineInputBorder(),
                   ),
                   maxLines: null,

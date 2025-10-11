@@ -18,7 +18,7 @@ class ComicSeriesContainer extends StatefulWidget {
 class _ComicSeriesContainerState extends State<ComicSeriesContainer> {
   final List<ComicSeries> _seriesList = SharedData.seriesList;
 
-  ComicSeries? _selectedSeries; // выбранный комикс для отображения деталей
+  ComicSeries? _selectedSeries;
   Screen _currentScreen = Screen.list;
 
 

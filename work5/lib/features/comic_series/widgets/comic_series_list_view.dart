@@ -9,10 +9,10 @@ class ComicSeriesListView extends StatelessWidget {
   final ValueChanged<ComicSeries> onSeriesTap;
 
   const ComicSeriesListView({
-    Key? key,
+    super.key,
     required this.seriesList,
     required this.onSeriesTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
