@@ -76,6 +76,16 @@ class _ImpressionNoteContainerState extends State<ImpressionNoteContainer> {
   }
 
   void _addImpressionNote(String description, String image) {
+    if (description.isEmpty) {
+      // Валидация: поле не должно быть пустым
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Пожалуйста, заполните поле "Впечатления".'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
     setState(() {
       final id = impressionNoteList.lastOrNull != null ? impressionNoteList.lastOrNull!.id+1 : 1;
       final newImpressionNote = ImpressionNote(
