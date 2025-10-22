@@ -1,16 +1,9 @@
 # work6
 
-A new Flutter project.
+В качестве задания на практическую работу, студенту в индивидуальном порядке требуется
+подготовить следующее задание.
 
-## Getting Started
+Студенту необходимо переработать имеющееся приложение, выполненное на предыдущих
+практических работах, таким образом, чтобы в нем было не менее 5 сетевых картинок,
+отображаемых как при подключении к сети интернет, так и без него.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
