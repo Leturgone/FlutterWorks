@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:work6/features/comic_series/state/comic_series_container.dart';
+import 'package:work6/features/gallery/state/gallery_container.dart';
 
 import 'features/impression_note/state/impression_note_container.dart';
 
@@ -15,7 +16,8 @@ class _MyAppState extends State<MyApp> {
 
   final List<Widget> _pages = [
     ComicSeriesContainer(),
-    ImpressionNoteContainer()
+    ImpressionNoteContainer(),
+    ComicGalleryContainer()
   ];
 
   void _onItemTapped(int index) {
@@ -44,6 +46,10 @@ class _MyAppState extends State<MyApp> {
             BottomNavigationBarItem(
               icon: Icon(Icons.note),
               label: 'Впечатления',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.browse_gallery),
+              label: 'Галерея обложек',
             ),
           ],
         ),
