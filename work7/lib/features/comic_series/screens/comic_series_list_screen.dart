@@ -1,5 +1,6 @@
 
 import 'package:work7/features/comic_series/widgets/comic_series_list_view.dart';
+import 'package:work7/main_scaffold.dart';
 
 import '../models/comic_series.dart';
 import 'package:flutter/material.dart';
@@ -12,11 +13,11 @@ class ComicSeriesListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MainScaffold(
       appBar: AppBar(
         title: Text('Серии комиксов'),
       ),
-      body: ComicSeriesListView(seriesList: seriesList, onSeriesTap: onSeriesTap),
+      body: ComicSeriesListView(seriesList: seriesList, onSeriesTap: onSeriesTap),currentIndex: 0,
     );
   }
 }
