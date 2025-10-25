@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:work7/features/impression_note/models/impression_note.dart';
 import 'package:work7/features/impression_note/widgets/impression_note_list_view.dart';
+import 'package:work7/main_scaffold.dart';
 
 class ImpressionNoteListScreen extends StatelessWidget {
   final List<ImpressionNote> impressionNotes;
@@ -18,7 +19,7 @@ class ImpressionNoteListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return MainScaffold(
         appBar: AppBar(
           title: Text('Заметки о впечатлениях'),
         ),
@@ -39,6 +40,7 @@ class ImpressionNoteListScreen extends StatelessWidget {
             ),
           ],
         ),
+      currentIndex: 1,
     );
   }
 }
