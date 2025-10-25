@@ -9,8 +9,9 @@ import 'package:work7/features/comic_characters/state/character_container.dart';
 class MainScaffold extends StatelessWidget {
   final Widget body;
   final int currentIndex;
+  final Row? floatingActionButton;
 
-  const MainScaffold({super.key, required this.body, this.currentIndex = 0, Row? floatingActionButton, AppBar? appBar});
+  const MainScaffold({super.key, required this.body, this.currentIndex = 0, this.floatingActionButton});
 
   void navigateTo(BuildContext context, Widget page) {
     if (Navigator.of(context).canPop()) {
@@ -31,6 +32,7 @@ class MainScaffold extends StatelessWidget {
         title: const Text('Приложение'),
       ),
       body: body,
+      floatingActionButton: floatingActionButton,
       drawer: Drawer(
         child: ListView(
           children: [
