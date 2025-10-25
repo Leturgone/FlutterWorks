@@ -14,9 +14,6 @@ class ComicSeriesListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      appBar: AppBar(
-        title: Text('Серии комиксов'),
-      ),
       body: ComicSeriesListView(seriesList: seriesList, onSeriesTap: onSeriesTap),currentIndex: 0,
     );
   }

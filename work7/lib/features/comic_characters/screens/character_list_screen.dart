@@ -14,9 +14,6 @@ class CharacterListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      appBar: AppBar(
-        title: Text('Серии комиксов'),
-      ),
       body: CharacterListView(characterList: characterList,),currentIndex: 3,
     );
   }

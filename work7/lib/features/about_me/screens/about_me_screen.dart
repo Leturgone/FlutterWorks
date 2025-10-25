@@ -11,9 +11,6 @@ class AboutMeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-      appBar: AppBar(
-        title: Text('О разработчике'),
-      ),
       body: AboutMeView(name: name),
       currentIndex: 4,
     );

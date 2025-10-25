@@ -20,20 +20,19 @@ class ImpressionNoteListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MainScaffold(
-        appBar: AppBar(
-          title: Text('Заметки о впечатлениях'),
-        ),
         body: ImpressionNoteListView(notes: impressionNotes, onDelete: onDelete!, onNoteTap: onNoteTap,onEdit: onEdit),
         floatingActionButton:Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
+              heroTag: 'fab1',
               onPressed: onAdd,
               tooltip: 'Добавить заметку',
               child: const Icon(Icons.add),
             ),
             SizedBox(width: 16),
             FloatingActionButton(
+              heroTag: 'fab2',
               onPressed: onSort,
               tooltip: 'Сортировать',
               child: const Icon(Icons.sort_by_alpha),
