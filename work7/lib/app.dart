@@ -1,59 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:work7/features/comic_series/state/comic_series_container.dart';
 import 'package:work7/features/gallery/state/gallery_container.dart';
 
+import 'features/about_me/state/about_me_container.dart';
+import 'features/comic_characters/state/character_container.dart';
 import 'features/impression_note/state/impression_note_container.dart';
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class MyApp extends StatelessWidget {
+  MyApp({super.key});
 
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _pages = [
-    ComicSeriesContainer(),
-    ImpressionNoteContainer(),
-    ComicGalleryContainer()
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  final GoRouter _router = GoRouter(
+    routes: [
+      GoRoute(path: '/', builder: (context, state) => ComicSeriesContainer()),
+      GoRoute(path: 'comic_series',builder: (context,state) => ComicSeriesContainer()),
+      GoRoute(path: '/im_notes', builder: (context, state) => ImpressionNoteContainer()),
+      GoRoute(path: '/gallery', builder: (context, state) => ComicGalleryContainer()),
+      GoRoute(path: '/characters', builder: (context, state) => CharacterContainer()),
+      GoRoute(path: '/about_me', builder: (context, state) => AboutMeContainer()),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: Scaffold(
-        body: _pages[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.book),
-              label: 'Серии',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.note),
-              label: 'Впечатления',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.browse_gallery),
-              label: 'Галерея обложек',
-            ),
-          ],
-        ),
-      ),
+    return MaterialApp.router(
+      routerConfig: _router,
     );
   }
 }
