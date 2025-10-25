@@ -13,7 +13,6 @@ class MyApp extends StatelessWidget {
   final GoRouter _router = GoRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => ComicSeriesContainer()),
-      GoRoute(path: 'comic_series',builder: (context,state) => ComicSeriesContainer()),
       GoRoute(path: '/im_notes', builder: (context, state) => ImpressionNoteContainer()),
       GoRoute(path: '/gallery', builder: (context, state) => ComicGalleryContainer()),
       GoRoute(path: '/characters', builder: (context, state) => CharacterContainer()),
