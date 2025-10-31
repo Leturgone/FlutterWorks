@@ -3,9 +3,8 @@ import 'package:work7/features/comic_series/models/comic_series.dart';
 
 class ComicSeriesAboutView extends StatelessWidget {
   final ComicSeries series;
-  final VoidCallback onBack;
 
-  const ComicSeriesAboutView({super.key, required this.series, required this.onBack});
+  const ComicSeriesAboutView({super.key, required this.series});
 
   @override
   Widget build(BuildContext context) {

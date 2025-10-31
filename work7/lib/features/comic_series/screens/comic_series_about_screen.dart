@@ -20,7 +20,7 @@ class ComicSeriesAboutScreen extends StatelessWidget {
           ),
           title: Text('О серии'),
         ),
-        body: ComicSeriesAboutView(series: series, onBack:() => Navigator.of(context).pop())
+        body: ComicSeriesAboutView(series: series)
     );
   }
 }

@@ -16,7 +16,7 @@ class ComicGalleryScreen extends StatelessWidget {
               Navigator.of(context).pop();
             },
           ),
-          title: Text('Галлерея обложек'),
+          title: Text('Галерея обложек'),
         ),
         body: ComicGalleryWidget(imageUrls: imageUrls)
     );
