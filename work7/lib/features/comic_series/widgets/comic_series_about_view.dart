@@ -39,10 +39,6 @@ class ComicSeriesAboutView extends StatelessWidget {
               ),
             ),
             SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: onBack,
-              child: Text('Назад'),
-            ),
           ],
         ),
       ),

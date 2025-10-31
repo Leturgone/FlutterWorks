@@ -3,12 +3,10 @@ import 'package:work7/features/impression_note/models/impression_note.dart';
 
 class ImpressionNoteAboutView extends StatelessWidget {
   final ImpressionNote impressionNote;
-  final VoidCallback onBack;
 
   const ImpressionNoteAboutView({
     super.key,
     required this.impressionNote,
-    required this.onBack,
   });
 
   @override
@@ -42,11 +40,7 @@ class ImpressionNoteAboutView extends StatelessWidget {
                 style: TextStyle(fontSize: 16),
               ),
             ),
-            SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: onBack,
-              child: Text('Назад'),
-            ),
+            SizedBox(height: 24)
           ],
         ),
       ),
