@@ -7,15 +7,23 @@ import '../models/impression_note.dart';
 
 class ImpressionNoteAboutScreen extends StatelessWidget {
   final ImpressionNote impressionNote;
-  final VoidCallback onBack;
 
-  const ImpressionNoteAboutScreen({super.key, required this.impressionNote, required this.onBack});
+  const ImpressionNoteAboutScreen({super.key, required this.impressionNote});
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ImpressionNoteAboutView(impressionNote: impressionNote, onBack: onBack),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        title: Text('О заметке о впечатлении'),
+      ),
+      body: ImpressionNoteAboutView(impressionNote: impressionNote),
     );
   }
 }

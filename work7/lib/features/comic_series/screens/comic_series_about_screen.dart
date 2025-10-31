@@ -5,14 +5,22 @@ import '../models/comic_series.dart';
 
 class ComicSeriesAboutScreen extends StatelessWidget {
   final ComicSeries series;
-  final VoidCallback onBack;
 
-  const ComicSeriesAboutScreen({super.key, required this.series, required this.onBack});
+  const ComicSeriesAboutScreen({super.key, required this.series});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ComicSeriesAboutView(series: series, onBack: onBack)
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          title: Text('О серии'),
+        ),
+        body: ComicSeriesAboutView(series: series, onBack:() => Navigator.of(context).pop())
     );
   }
 }

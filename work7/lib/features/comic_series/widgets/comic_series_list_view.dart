@@ -32,7 +32,7 @@ class ComicSeriesListView extends StatelessWidget {
       itemCount: seriesList.length,
       itemBuilder: (context, index) {
         final series = seriesList[index];
-        return ComicSeriesTile(key: ValueKey(series.id),series: series, onTap: onSeriesTap,);
+        return ComicSeriesTile(key: ValueKey(series.id),series: series, onTap: onSeriesTap);
       },
     );
   }
