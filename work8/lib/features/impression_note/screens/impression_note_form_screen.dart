@@ -4,12 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:work8/features/impression_note/models/impression_note.dart';
 import 'package:work8/features/impression_note/repository/impression_notes_repository.dart';
 
+import '../impression_rep_provider.dart';
+
 class ImpressionNoteFormScreen extends StatefulWidget  {
   final int id;
-  final ImpressionNoteRepository impressionNoteRepository;
   final ImpressionNote? impressionNote;
   final String? selectedCover;
-  const ImpressionNoteFormScreen({super.key, this.impressionNote, this.selectedCover, required this.id, required this.impressionNoteRepository});
+  const ImpressionNoteFormScreen({super.key, this.impressionNote, this.selectedCover, required this.id});
 
   @override
   _ImpressionNoteFormScreenState createState() => _ImpressionNoteFormScreenState();
@@ -18,13 +19,19 @@ class ImpressionNoteFormScreen extends StatefulWidget  {
 class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
   late TextEditingController _noteController;
   String? _seriesCover;
+  late ImpressionNoteRepository impressionNoteRepository;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    impressionNoteRepository = ImpressionRepProvider.of(context).impressionNoteRepository;
+  }
 
   void onImageTap() {
     if (_seriesCover == null || _seriesCover!.isEmpty) {
       context.push('/comic_series_choose',extra: (String selectedImage) {
         final args = {
           'id': widget.id,
-          'impressionNoteRepository': widget.impressionNoteRepository,
+          'impressionNoteRepository': impressionNoteRepository,
           'selectedCover': selectedImage,
         };
         context.pushReplacement('/note/add/image', extra: args);
@@ -78,7 +85,7 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
       return;
     }
     if (widget.impressionNote!=null) {
-      widget.impressionNoteRepository.updateNote(widget.id, widget.impressionNote!, newDescription, newImage);
+      impressionNoteRepository.updateNote(widget.id, widget.impressionNote!, newDescription, newImage);
     }else{
       final newImpressionNote = ImpressionNote(
           id: widget.id,
@@ -86,7 +93,7 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
           description: newDescription,
           createdAt: DateTime.now()
       );
-      widget.impressionNoteRepository.addNote(newImpressionNote);
+      impressionNoteRepository.addNote(newImpressionNote);
     }
     context.pushReplacement('/im_notes');
 

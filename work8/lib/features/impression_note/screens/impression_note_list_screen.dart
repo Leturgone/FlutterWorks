@@ -1,14 +1,16 @@
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:work8/features/impression_note/impression_rep_provider.dart';
 import 'package:work8/features/impression_note/models/impression_note.dart';
 import 'package:work8/features/impression_note/widgets/impression_note_list_view.dart';
 
 import '../repository/impression_notes_repository.dart';
 
 class ImpressionNoteListScreen extends StatefulWidget {
-  final ImpressionNoteRepository impressionNoteRepository;
-  const ImpressionNoteListScreen({super.key, required this.impressionNoteRepository});
+
+  const ImpressionNoteListScreen({super.key});
 
   @override
   _ImpressionNoteListScreenState createState() => _ImpressionNoteListScreenState();
@@ -16,24 +18,31 @@ class ImpressionNoteListScreen extends StatefulWidget {
 
 class _ImpressionNoteListScreenState extends State<ImpressionNoteListScreen> {
   late List<ImpressionNote> notes;
-
+  late ImpressionNoteRepository impressionNoteRepository;
   @override
   void initState() {
     super.initState();
-    notes = List.from(widget.impressionNoteRepository.getNotes());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    impressionNoteRepository = ImpressionRepProvider.of(context).impressionNoteRepository;
+    notes = List.from(impressionNoteRepository.getNotes());
   }
 
   // Функция удаления
   void onDelete(int id){
     setState(() {
-      widget.impressionNoteRepository.removeNote(id);
+      impressionNoteRepository.removeNote(id);
+      notes = List.from(impressionNoteRepository.getNotes());
     });
   }
 
   // Функция сортировки
   void onSort() {
     setState(() {
-      notes.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+      notes.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     });
   }
 
@@ -47,7 +56,7 @@ class _ImpressionNoteListScreenState extends State<ImpressionNoteListScreen> {
     final args = {
       'id': note.id,
       'impressionNote': note,
-      'impressionNoteRepository': widget.impressionNoteRepository,
+      'impressionNoteRepository': impressionNoteRepository,
     };
     context.push('/note/edit', extra: args);
   }
@@ -57,7 +66,7 @@ class _ImpressionNoteListScreenState extends State<ImpressionNoteListScreen> {
     final newId = notes.lastOrNull != null ? notes.lastOrNull!.id + 1 : 1;
     final args = {
       'id': newId,
-      'impressionNoteRepository': widget.impressionNoteRepository,
+      'impressionNoteRepository': impressionNoteRepository,
     };
     context.push('/note/add', extra: args);
   }
@@ -74,7 +83,7 @@ class _ImpressionNoteListScreenState extends State<ImpressionNoteListScreen> {
 
       ),
       body: ImpressionNoteListView(
-        notes: List.from(widget.impressionNoteRepository.getNotes()),
+        notes: notes,
         onDelete: onDelete,
         onNoteTap: onNoteTap,
         onEdit: onEdit,
