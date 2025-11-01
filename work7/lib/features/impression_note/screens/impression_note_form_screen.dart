@@ -1,11 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:work7/features/impression_note/models/impression_note.dart';
 import 'package:work7/features/impression_note/repository/impression_notes_repository.dart';
-import 'package:work7/features/impression_note/screens/impression_note_list_screen.dart';
-
-import '../../comic_series/screens/comic_series_list_screen.dart';
-import '../../shared_data.dart';
 
 class ImpressionNoteFormScreen extends StatefulWidget  {
   final int id;
@@ -24,23 +21,14 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
 
   void onImageTap() {
     if (_seriesCover == null || _seriesCover!.isEmpty) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => ComicSeriesListScreen(
-            seriesList: SharedData.seriesList,
-            usual: false,
-            onSelectImage: (String selectedImage) {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => ImpressionNoteFormScreen(id: widget.id,
-                    impressionNoteRepository: widget.impressionNoteRepository,
-                  selectedCover: selectedImage,
-                )),
-              );
-            },
-          ),
-        ),
-      );
+      context.push('/comic_series_choose',extra: (String selectedImage) {
+        final args = {
+          'id': widget.id,
+          'impressionNoteRepository': widget.impressionNoteRepository,
+          'selectedCover': selectedImage,
+        };
+        context.pushReplacement('/note/add/image', extra: args);
+      });
     }
   }
 
@@ -100,9 +88,7 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
       );
       widget.impressionNoteRepository.addNote(newImpressionNote);
     }
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (_) => ImpressionNoteListScreen(impressionNoteRepository: widget.impressionNoteRepository)),
-    );
+    context.pushReplacement('/im_notes');
 
   }
 
@@ -114,7 +100,7 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop();
+            context.pop();
           },
         ),
         title: Text('Форма заметки о впечатлении'),
@@ -154,7 +140,7 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
                   ),
                   SizedBox(width: 16),
                   ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () => context.pop(),
                     child: Text('Отмена'),
                   ),
                 ],
