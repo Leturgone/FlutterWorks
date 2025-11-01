@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../widgets/comic_gallery_widget.dart';
 
@@ -12,9 +13,7 @@ class ComicGalleryScreen extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+            onPressed: () {context.pop();},
           ),
           title: Text('Галерея обложек'),
         ),

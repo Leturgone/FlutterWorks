@@ -1,10 +1,9 @@
 
+import 'package:go_router/go_router.dart';
 import 'package:work7/features/comic_series/widgets/comic_series_list_view.dart';
 
 import '../models/comic_series.dart';
 import 'package:flutter/material.dart';
-
-import 'comic_series_about_screen.dart';
 
 class ComicSeriesListScreen extends StatelessWidget {
   final List<ComicSeries> seriesList;
@@ -15,12 +14,7 @@ class ComicSeriesListScreen extends StatelessWidget {
 
   void onSeriesTap(BuildContext context,ComicSeries series) {
     if (usual == true){
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => ComicSeriesAboutScreen(series: series),
-        ),
-      );
+      context.push('/series-about', extra: series);
     }else{
       onSelectImage!(series.image);
   }
@@ -31,7 +25,7 @@ class ComicSeriesListScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {Navigator.of(context).pop();},
+          onPressed: () {context.pop();},
         ),
         title: Text('Серии комиксов'),
       ),

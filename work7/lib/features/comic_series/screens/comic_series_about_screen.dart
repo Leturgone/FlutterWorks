@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:work7/features/comic_series/widgets/comic_series_about_view.dart';
 
 import '../models/comic_series.dart';
@@ -14,9 +15,7 @@ class ComicSeriesAboutScreen extends StatelessWidget {
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+            onPressed: () {context.pop();},
           ),
           title: Text('О серии'),
         ),

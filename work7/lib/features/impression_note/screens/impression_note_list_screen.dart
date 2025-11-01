@@ -1,9 +1,7 @@
 
 import 'package:flutter/material.dart';
-import 'package:work7/features/comic_series/screens/comic_series_list_screen.dart';
+import 'package:go_router/go_router.dart';
 import 'package:work7/features/impression_note/models/impression_note.dart';
-import 'package:work7/features/impression_note/screens/impression_note_about_screen.dart';
-import 'package:work7/features/impression_note/screens/impression_note_form_screen.dart';
 import 'package:work7/features/impression_note/widgets/impression_note_list_view.dart';
 
 import '../repository/impression_notes_repository.dart';
@@ -40,23 +38,28 @@ class _ImpressionNoteListScreenState extends State<ImpressionNoteListScreen> {
   }
 
   void onNoteTap(ImpressionNote note) {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => ImpressionNoteAboutScreen(impressionNote: note)));
+    context.push('/note/about', extra: note);
   }
 
 
   // Обработка редактирования заметки
   void onEdit(ImpressionNote note) {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => ImpressionNoteFormScreen(
-        id: note.id,
-        impressionNote: note,
-        impressionNoteRepository: widget.impressionNoteRepository)));
+    final args = {
+      'id': note.id,
+      'impressionNote': note,
+      'impressionNoteRepository': widget.impressionNoteRepository,
+    };
+    context.push('/note/edit', extra: args);
   }
 
   // Добавление новой заметки
   void onAdd() {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => ImpressionNoteFormScreen(
-      id: notes.lastOrNull != null ? notes.lastOrNull!.id+1 : 1,
-      impressionNoteRepository: widget.impressionNoteRepository,)));
+    final newId = notes.lastOrNull != null ? notes.lastOrNull!.id + 1 : 1;
+    final args = {
+      'id': newId,
+      'impressionNoteRepository': widget.impressionNoteRepository,
+    };
+    context.push('/note/add', extra: args);
   }
 
   @override
@@ -65,7 +68,7 @@ class _ImpressionNoteListScreenState extends State<ImpressionNoteListScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
-          onPressed: () {Navigator.of(context).pop();},
+          onPressed: () {context.pop();},
         ),
         title: Text('Заметки о впечатлениях'),
 
