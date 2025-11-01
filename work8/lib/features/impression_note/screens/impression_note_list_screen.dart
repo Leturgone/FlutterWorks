@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:work8/features/impression_note/impression_rep_provider.dart';
 import 'package:work8/features/impression_note/models/impression_note.dart';
 import 'package:work8/features/impression_note/widgets/impression_note_list_view.dart';
 
@@ -27,7 +26,7 @@ class _ImpressionNoteListScreenState extends State<ImpressionNoteListScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    impressionNoteRepository = ImpressionRepProvider.of(context).impressionNoteRepository;
+    impressionNoteRepository = GetIt.I<ImpressionNoteRepository>();
     notes = List.from(impressionNoteRepository.getNotes());
   }
 

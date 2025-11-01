@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:work8/features/impression_note/models/impression_note.dart';
 import 'package:work8/features/impression_note/repository/impression_notes_repository.dart';
 
-import '../impression_rep_provider.dart';
 
 class ImpressionNoteFormScreen extends StatefulWidget  {
   final int id;
@@ -20,10 +20,11 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
   late TextEditingController _noteController;
   String? _seriesCover;
   late ImpressionNoteRepository impressionNoteRepository;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    impressionNoteRepository = ImpressionRepProvider.of(context).impressionNoteRepository;
+    impressionNoteRepository = GetIt.I<ImpressionNoteRepository>();
   }
 
   void onImageTap() {
