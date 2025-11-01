@@ -4,6 +4,7 @@ import 'features/comic_series/models/comic_series.dart';
 import 'features/comic_series/screens/comic_series_about_screen.dart';
 import 'features/comic_series/screens/comic_series_list_screen.dart';
 import 'features/gallery/screens/comic_gallery_screen.dart';
+import 'features/impression_note/impression_rep_provider.dart';
 import 'features/impression_note/models/impression_note.dart';
 import 'features/impression_note/repository/impression_notes_repository.dart';
 import 'features/impression_note/screens/impression_note_about_screen.dart';
@@ -19,14 +20,12 @@ List<String> imageUrls = [
   "https://cdn.marvel.com/u/prod/marvel/i/mg/4/60/68e6a1293e977/standard_incredible.jpg",
   "https://cdn.marvel.com/u/prod/marvel/i/mg/4/80/575ef36168a99/standard_incredible.jpg"
 ];
-ImpressionNoteRepository impressionNoteRepository = ImpressionNoteRepository();
-
 final GoRouter appRouter = GoRouter(
     initialLocation: '/', 
     routes: [
       GoRoute(path: '/', builder: (context, state) => HomePage()),
       GoRoute(path: '/comic_series', builder: (context, state) => ComicSeriesListScreen(seriesList: SharedData.seriesList, usual: true)),
-      GoRoute(path: '/im_notes', builder: (context, state) => ImpressionNoteListScreen(impressionNoteRepository: impressionNoteRepository)),
+      GoRoute(path: '/im_notes', builder: (context, state) => ImpressionNoteListScreen()),
       GoRoute(path: '/gallery', builder: (context, state) => ComicGalleryScreen(imageUrls: imageUrls)),
       GoRoute(path: '/series-about', builder: (context, state) {
           final ComicSeries series = state.extra as ComicSeries;
@@ -38,11 +37,6 @@ final GoRouter appRouter = GoRouter(
           return ComicSeriesListScreen(seriesList: SharedData.seriesList, usual: false, onSelectImage: onSelectImage,);
         },
       ),
-      GoRoute(path: '/notes', builder: (context, state) {
-          final repo = state.extra as ImpressionNoteRepository;
-          return ImpressionNoteListScreen(impressionNoteRepository: repo);
-        },
-      ),
       GoRoute(path: '/note/about', builder: (context, state) {
           final note = state.extra as ImpressionNote;
           return ImpressionNoteAboutScreen(impressionNote: note);
@@ -50,17 +44,17 @@ final GoRouter appRouter = GoRouter(
       ),
       GoRoute(path: '/note/edit', builder: (context, state) {
           final args = state.extra as Map<String, dynamic>;
-          return ImpressionNoteFormScreen(id: args['id'], impressionNote: args['impressionNote'], impressionNoteRepository: args['impressionNoteRepository'],);
+          return ImpressionNoteFormScreen(id: args['id'], impressionNote: args['impressionNote']);
         },
       ),
       GoRoute(path: '/note/add', builder: (context, state) {
           final args = state.extra as Map<String, dynamic>;
-          return ImpressionNoteFormScreen(id: args['id'], impressionNoteRepository: args['impressionNoteRepository'],);
+          return ImpressionNoteFormScreen(id: args['id']);
         },
       ),
       GoRoute(path: '/note/add/image', builder: (context, state) {
           final args = state.extra as Map<String, dynamic>;
-          return ImpressionNoteFormScreen(id: args['id'], impressionNote: args['impressionNote'], impressionNoteRepository: args['impressionNoteRepository'], selectedCover: args['selectedCover'],);
+          return ImpressionNoteFormScreen(id: args['id'], impressionNote: args['impressionNote'], selectedCover: args['selectedCover'],);
         },
       ),
     ],
