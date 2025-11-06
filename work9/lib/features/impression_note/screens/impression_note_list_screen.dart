@@ -1,11 +1,11 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:work9/features/impression_note/models/impression_note.dart';
+import 'package:work9/features/impression_note/state/impression_notes_store.dart';
 import 'package:work9/features/impression_note/widgets/impression_note_list_view.dart';
-
-import '../repository/impression_notes_repository.dart';
 
 class ImpressionNoteListScreen extends StatefulWidget {
 
@@ -16,8 +16,8 @@ class ImpressionNoteListScreen extends StatefulWidget {
 }
 
 class _ImpressionNoteListScreenState extends State<ImpressionNoteListScreen> {
-  late List<ImpressionNote> notes;
-  late ImpressionNoteRepository impressionNoteRepository;
+  late ImpressionNotesStore impressionNotesStore;
+
   @override
   void initState() {
     super.initState();
@@ -26,22 +26,20 @@ class _ImpressionNoteListScreenState extends State<ImpressionNoteListScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    impressionNoteRepository = GetIt.I<ImpressionNoteRepository>();
-    notes = List.from(impressionNoteRepository.getNotes());
+    impressionNotesStore = GetIt.I<ImpressionNotesStore>();
   }
 
   // Функция удаления
   void onDelete(int id){
     setState(() {
-      impressionNoteRepository.removeNote(id);
-      notes = List.from(impressionNoteRepository.getNotes());
+      impressionNotesStore.removeNote(id);
     });
   }
 
   // Функция сортировки
   void onSort() {
     setState(() {
-      notes.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      impressionNotesStore.impressionNotes.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     });
   }
 
@@ -55,17 +53,15 @@ class _ImpressionNoteListScreenState extends State<ImpressionNoteListScreen> {
     final args = {
       'id': note.id,
       'impressionNote': note,
-      'impressionNoteRepository': impressionNoteRepository,
     };
     context.push('/note/edit', extra: args);
   }
 
   // Добавление новой заметки
   void onAdd() {
-    final newId = notes.lastOrNull != null ? notes.lastOrNull!.id + 1 : 1;
+    final newId = impressionNotesStore.impressionNotes.lastOrNull != null ? impressionNotesStore.impressionNotes.lastOrNull!.id + 1 : 1;
     final args = {
       'id': newId,
-      'impressionNoteRepository': impressionNoteRepository,
     };
     context.push('/note/add', extra: args);
   }
@@ -81,11 +77,13 @@ class _ImpressionNoteListScreenState extends State<ImpressionNoteListScreen> {
         title: Text('Заметки о впечатлениях'),
 
       ),
-      body: ImpressionNoteListView(
-        notes: notes,
-        onDelete: onDelete,
-        onNoteTap: onNoteTap,
-        onEdit: onEdit,
+      body: Observer(
+          builder: (_) => ImpressionNoteListView(
+            notes: impressionNotesStore.impressionNotes,
+            onDelete: onDelete,
+            onNoteTap: onNoteTap,
+            onEdit: onEdit,
+          )
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
