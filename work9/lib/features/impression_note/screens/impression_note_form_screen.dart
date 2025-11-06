@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:work9/features/impression_note/models/impression_note.dart';
-import 'package:work9/features/impression_note/repository/impression_notes_repository.dart';
+import 'package:work9/features/impression_note/state/impression_notes_store.dart';
 
 
 class ImpressionNoteFormScreen extends StatefulWidget  {
@@ -18,13 +18,13 @@ class ImpressionNoteFormScreen extends StatefulWidget  {
 
 class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
   late TextEditingController _noteController;
+  late ImpressionNotesStore impressionNotesStore;
   String? _seriesCover;
-  late ImpressionNoteRepository impressionNoteRepository;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    impressionNoteRepository = GetIt.I<ImpressionNoteRepository>();
+    impressionNotesStore = GetIt.I<ImpressionNotesStore>();
   }
 
   void onImageTap() {
@@ -32,7 +32,6 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
       context.push('/comic_series_choose',extra: (String selectedImage) {
         final args = {
           'id': widget.id,
-          'impressionNoteRepository': impressionNoteRepository,
           'selectedCover': selectedImage,
         };
         context.pushReplacement('/note/add/image', extra: args);
@@ -86,7 +85,7 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
       return;
     }
     if (widget.impressionNote!=null) {
-      impressionNoteRepository.updateNote(widget.id, widget.impressionNote!, newDescription, newImage);
+      impressionNotesStore.updateNote(widget.id, widget.impressionNote!, newDescription, newImage);
     }else{
       final newImpressionNote = ImpressionNote(
           id: widget.id,
@@ -94,7 +93,7 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
           description: newDescription,
           createdAt: DateTime.now()
       );
-      impressionNoteRepository.addNote(newImpressionNote);
+      impressionNotesStore.addNote(newImpressionNote);
     }
     context.pushReplacement('/im_notes');
 
