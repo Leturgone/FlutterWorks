@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
+import 'package:work9/features/comic_series/stores/comic_series_about_store.dart';
 import 'package:work9/features/comic_series/widgets/comic_series_about_view.dart';
 
-import '../models/comic_series.dart';
-
 class ComicSeriesAboutScreen extends StatelessWidget {
-  final ComicSeries series;
-
-  const ComicSeriesAboutScreen({super.key, required this.series});
-
+  final ComicSeriesAboutStore store = ComicSeriesAboutStore();
+  final int seriesId;
+  ComicSeriesAboutScreen({super.key, required this.seriesId}){
+    store.loadSeries(seriesId);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +20,18 @@ class ComicSeriesAboutScreen extends StatelessWidget {
           ),
           title: Text('О серии'),
         ),
-        body: ComicSeriesAboutView(series: series)
+        body: Observer(
+            builder:  (_) {
+              if (store.isLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+              final series = store.series;
+              if (series == null) {
+                return Center(child: Text('Нет данных'));
+              }
+              return ComicSeriesAboutView(series: series);
+            }
+        )
     );
   }
 }
