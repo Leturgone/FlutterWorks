@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
+import 'package:work9/features/impression_note/state/impression_note_about_store.dart';
 import 'package:work9/features/impression_note/widgets/impression_note_about_view.dart';
-
-import '../models/impression_note.dart';
-
 
 
 class ImpressionNoteAboutScreen extends StatelessWidget {
-  final ImpressionNote impressionNote;
-
-  const ImpressionNoteAboutScreen({super.key, required this.impressionNote});
+  final ImpressionNoteAboutStore store = ImpressionNoteAboutStore();
+  final int noteId;
+  ImpressionNoteAboutScreen({super.key, required this.noteId}){
+    store.loadNoteById(noteId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,18 @@ class ImpressionNoteAboutScreen extends StatelessWidget {
         ),
         title: Text('О заметке о впечатлении'),
       ),
-      body: ImpressionNoteAboutView(impressionNote: impressionNote),
+        body: Observer(
+            builder:  (_) {
+              if (store.isLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+              final impressionNote = store.impressionNote;
+              if (impressionNote == null) {
+                return Center(child: Text('Нет данных'));
+              }
+              return ImpressionNoteAboutView(impressionNote: impressionNote);
+            }
+        )
     );
   }
 }
