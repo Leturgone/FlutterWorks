@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:work9/features/impression_note/models/impression_note.dart';
 import 'package:work9/features/impression_note/widgets/impression_note_tile.dart';
 
@@ -18,24 +19,26 @@ class ImpressionNoteListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (notes.isEmpty) {
-      return const Center(
-        child: Text(
-          'Список заметок о впечатлениях пуст',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
+    return Observer(builder: (_){
+      if (notes.isEmpty) {
+        return const Center(
+          child: Text(
+            'Список заметок о впечатлениях пуст',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey,
+            ),
           ),
-        ),
-      );
-    }
+        );
+      }
 
-    return ListView.builder(
-      itemCount: notes.length,
-      itemBuilder: (context, index) {
-        final note = notes[index];
-        return ImpressionNoteTile(key: ValueKey(note.id), note: note, onDelete: onDelete, onTap: onNoteTap,onEdit: onEdit);
-      },
-    );
+      return ListView.builder(
+        itemCount: notes.length,
+        itemBuilder: (context, index) {
+          final note = notes[index];
+          return ImpressionNoteTile(key: ValueKey(note.id), note: note, onDelete: onDelete, onTap: onNoteTap,onEdit: onEdit);
+        },
+      );
+    });
   }
 }

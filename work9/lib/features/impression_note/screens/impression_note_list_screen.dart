@@ -4,100 +4,72 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:work9/features/impression_note/models/impression_note.dart';
-import 'package:work9/features/impression_note/state/impression_notes_store.dart';
+import 'package:work9/features/impression_note/state/impression_notes_list_store.dart';
 import 'package:work9/features/impression_note/widgets/impression_note_list_view.dart';
 
-class ImpressionNoteListScreen extends StatefulWidget {
 
-  const ImpressionNoteListScreen({super.key});
-
-  @override
-  _ImpressionNoteListScreenState createState() => _ImpressionNoteListScreenState();
-}
-
-class _ImpressionNoteListScreenState extends State<ImpressionNoteListScreen> {
-  late ImpressionNotesStore impressionNotesStore;
-
-  @override
-  void initState() {
-    super.initState();
+class ImpressionNoteListScreen extends StatelessWidget {
+  ImpressionNoteListScreen({super.key}){
+    store.loadNoteList();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    impressionNotesStore = GetIt.I<ImpressionNotesStore>();
-  }
-
-  // Функция удаления
-  void onDelete(int id){
-    setState(() {
-      impressionNotesStore.removeNote(id);
-    });
-  }
-
-  // Функция сортировки
-  void onSort() {
-    setState(() {
-      impressionNotesStore.impressionNotes.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    });
-  }
-
-  void onNoteTap(ImpressionNote note) {
-    context.push('/note/about', extra: note);
-  }
-
-
-  // Обработка редактирования заметки
-  void onEdit(ImpressionNote note) {
-    final args = {
-      'id': note.id,
-      'impressionNote': note,
-    };
-    context.push('/note/edit', extra: args);
-  }
-
-  // Добавление новой заметки
-  void onAdd() {
-    final newId = impressionNotesStore.impressionNotes.lastOrNull != null ? impressionNotesStore.impressionNotes.lastOrNull!.id + 1 : 1;
-    final args = {
-      'id': newId,
-    };
-    context.push('/note/add', extra: args);
-  }
-
+  final store = ImpressionNotesListStore();
   @override
   Widget build(BuildContext context) {
+
+    void onAdd(ImpressionNotesListStore store) {
+      final notes = store.impressionNotes ?? [];
+      final newId = notes.isNotEmpty ? notes.last.id + 1 : 1;
+      final args = {
+        'id': newId,
+        'store': store
+      };
+      context.push('/note/add', extra: args);
+    }
+    void onNoteTap(ImpressionNote note) {
+      context.push('/note/about', extra: note.id);
+    }
+    void onEdit(ImpressionNote note) {
+      final args = {'id': note.id, 'impressionNote': note,};
+      context.push('/note/edit', extra: args);
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {context.pop();},
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.pop(),
         ),
-        title: Text('Заметки о впечатлениях'),
-
+        title: const Text('Заметки о впечатлениях'),
       ),
       body: Observer(
-          builder: (_) => ImpressionNoteListView(
-            notes: impressionNotesStore.impressionNotes,
-            onDelete: onDelete,
-            onNoteTap: onNoteTap,
+        builder: (_) {
+          if (store.isLoading) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return ImpressionNoteListView(
+            notes: store.impressionNotes ?? [],
+            onDelete: (id) => store.removeNote(id),
+            onNoteTap:  onNoteTap,
             onEdit: onEdit,
-          )
+          );
+        },
       ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
             heroTag: 'fab1',
-            onPressed: onAdd,
+            onPressed: () => onAdd(store),
             tooltip: 'Добавить заметку',
             child: const Icon(Icons.add),
           ),
-          SizedBox(width: 16),
+          const SizedBox(width: 16),
           FloatingActionButton(
             heroTag: 'fab2',
-            onPressed: onSort,
+            onPressed: () => store.sort(),
             tooltip: 'Сортировать',
             child: const Icon(Icons.sort_by_alpha),
           ),
