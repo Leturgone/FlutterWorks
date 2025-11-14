@@ -1,116 +1,42 @@
 
+
+
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:work9/features/impression_note/models/impression_note.dart';
-import 'package:work9/features/impression_note/state/impression_notes_store.dart';
 
+import '../models/impression_note.dart';
+import '../state/impression_note_form_store.dart';
 
-class ImpressionNoteFormScreen extends StatefulWidget  {
+class ImpressionNoteFormScreen extends StatelessWidget {
   final int id;
   final ImpressionNote? impressionNote;
   final String? selectedCover;
-  const ImpressionNoteFormScreen({super.key, this.impressionNote, this.selectedCover, required this.id});
 
-  @override
-  _ImpressionNoteFormScreenState createState() => _ImpressionNoteFormScreenState();
-}
-
-class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
-  late TextEditingController _noteController;
-  late ImpressionNotesStore impressionNotesStore;
-  String? _seriesCover;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    impressionNotesStore = GetIt.I<ImpressionNotesStore>();
-  }
-
-  void onImageTap() {
-    if (_seriesCover == null || _seriesCover!.isEmpty) {
-      context.push('/comic_series_choose',extra: (String selectedImage) {
-        final args = {
-          'id': widget.id,
-          'selectedCover': selectedImage,
-        };
-        context.pushReplacement('/note/add/image', extra: args);
-      });
-    }
-  }
-
-
-
-  @override
-  void initState() {
-    super.initState();
-    _noteController = TextEditingController();
-
-    if (widget.impressionNote != null) {
-      _noteController.text = widget.impressionNote!.description;
-      _seriesCover = widget.impressionNote!.seriesImage;
-    }
-    else if(widget.selectedCover!=null){
-      _seriesCover = widget.selectedCover!;
-    }
-  }
-
-  @override
-  void dispose() {
-    _noteController.dispose();
-    super.dispose();
-  }
-
-  void _save() {
-    final newDescription = _noteController.text.trim();
-    final newImage = _seriesCover ?? '';
-    if (newImage.isEmpty){
-      // Валидация: серия должна быть выбрана
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Пожалуйста, выберите серию.'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-    if (newDescription.isEmpty) {
-      // Валидация: поле не должно быть пустым
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Пожалуйста, заполните поле "Впечатление".'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-    if (widget.impressionNote!=null) {
-      impressionNotesStore.updateNote(widget.id, widget.impressionNote!, newDescription, newImage);
-    }else{
-      final newImpressionNote = ImpressionNote(
-          id: widget.id,
-          seriesImage: newImage,
-          description: newDescription,
-          createdAt: DateTime.now()
-      );
-      impressionNotesStore.addNote(newImpressionNote);
-    }
-    context.pushReplacement('/im_notes');
-
-  }
-
+  const ImpressionNoteFormScreen({
+    super.key,
+    this.impressionNote,
+    this.selectedCover,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final store = ImpressionNoteFormStore();
+
+    if( selectedCover!=null) store.setSeriesCover(selectedCover);
+    if (impressionNote!=null) store.seData(impressionNote!);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             context.pop();
           },
         ),
-        title: Text('Форма заметки о впечатлении'),
+        title: const Text('Форма заметки о впечатлении'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -118,37 +44,66 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap:  () => onImageTap(),
-                child:_seriesCover != null
-                    ? Image.network(_seriesCover!, width: 150, height: 150, fit: BoxFit.cover)
-                    : Container(
+                onTap: () => _onImageTap(context, store),
+                child: Observer(
+                  builder: (context) => store.seriesCover != null
+                      ? Image.network(
+                    store.seriesCover!,
+                    width: 150,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  )
+                      : Container(
                     width: 150,
                     height: 150,
                     color: Colors.grey[300],
-                    child: Icon(Icons.add_a_photo, size: 50))
+                    child: const Icon(Icons.add_a_photo, size: 50),
+                  ),
+                ),
+              ),
+              Observer(
+                builder: (context) => store.coverError != null
+                    ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    store.coverError!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 12,
+                    ),
+                  ),
+                )
+                    : const SizedBox(),
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  controller: _noteController,
-                  decoration: InputDecoration(
-                    labelText: 'Впечатление',
-                    border: OutlineInputBorder(),
+                child: Observer(
+                  builder: (context) => TextField(
+                    controller: TextEditingController(text: store.description)
+                      ..selection = TextSelection.collapsed(
+                        offset: store.description.length,
+                      ),
+                    onChanged: store.setDescription,
+                    decoration: InputDecoration(
+                      labelText: 'Впечатление',
+                      border: const OutlineInputBorder(),
+                      errorText: store.descriptionError,
+                    ),
+                    maxLines: null,
                   ),
-                  maxLines: null,
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                    onPressed: () => _save(),
-                    child: Text('Сохранить'),
+                    onPressed: () => _save(context, store),
+                    child: const Text('Сохранить'),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   ElevatedButton(
                     onPressed: () => context.pop(),
-                    child: Text('Отмена'),
+                    child: const Text('Отмена'),
                   ),
                 ],
               ),
@@ -157,5 +112,51 @@ class _ImpressionNoteFormScreenState extends State<ImpressionNoteFormScreen> {
         ),
       ),
     );
+  }
+
+  void _initializeStore(ImpressionNoteFormStore store) {
+    if (impressionNote != null) {
+      store.setDescription(impressionNote!.description);
+      store.setSeriesCover(impressionNote!.seriesImage);
+    } else if (selectedCover != null) {
+      store.setSeriesCover(selectedCover!);
+    }
+  }
+
+  void _onImageTap(BuildContext context, ImpressionNoteFormStore store) {
+    if (store.seriesCover == null || store.seriesCover!.isEmpty) {
+      context.push('/comic_series_choose', extra: (String selectedImage) {
+        final args = {
+          'id': id,
+          'selectedCover': selectedImage,
+        };
+        context.pushReplacement('/note/add/image', extra: args);
+      });
+    }
+  }
+
+  void _save(BuildContext context, ImpressionNoteFormStore store) {
+    if (!store.validate()) {
+      return;
+    }
+
+    if (impressionNote != null) {
+      store.updateNote(
+        id,
+        impressionNote!,
+        store.description,
+        store.seriesCover ?? '',
+      );
+    } else {
+      final newImpressionNote = ImpressionNote(
+        id: id,
+        seriesImage: store.seriesCover ?? '',
+        description: store.description,
+        createdAt: DateTime.now(),
+      );
+      store.addNote(newImpressionNote);
+    }
+
+    context.pushReplacement('/im_notes');
   }
 }
