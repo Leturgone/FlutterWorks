@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:go_router/go_router.dart';
-import 'package:work9/features/impression_note/state/impression_note_about_store.dart';
+import 'package:work9/features/impression_note/store/impression_note_about_store.dart';
 import 'package:work9/features/impression_note/widgets/impression_note_about_view.dart';
 
 

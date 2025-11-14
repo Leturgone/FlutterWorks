@@ -7,7 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 import '../models/impression_note.dart';
-import '../state/impression_note_form_store.dart';
+import '../store/impression_note_form_store.dart';
 
 class ImpressionNoteFormScreen extends StatelessWidget {
   final int id;

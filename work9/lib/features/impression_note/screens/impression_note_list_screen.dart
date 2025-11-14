@@ -4,7 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:work9/features/impression_note/models/impression_note.dart';
-import 'package:work9/features/impression_note/state/impression_notes_list_store.dart';
+import 'package:work9/features/impression_note/store/impression_notes_list_store.dart';
 import 'package:work9/features/impression_note/widgets/impression_note_list_view.dart';
 
 
