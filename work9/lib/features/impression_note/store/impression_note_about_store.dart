@@ -22,7 +22,7 @@ abstract class _ImpressionNoteAboutStore with Store {
 
     await Future.delayed(Duration(seconds: 1)); // Эмуляция загрузки из БД
 
-    final note = GetIt.I<ObservableList<ImpressionNote>>()[id];
+    final note = GetIt.I<ObservableList<ImpressionNote>>().firstWhere((note)=>note.id == id);
 
     impressionNote = note;
     isLoading = false;

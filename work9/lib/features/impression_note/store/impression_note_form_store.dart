@@ -61,9 +61,9 @@ abstract class _ImpressionNoteFormStore with Store {
   @action
   void updateNote(int id, ImpressionNote note, String newDescription, String newImage) {
     final oldImpressionNote = note;
-    final index = id;
+    final index = GetIt.I<ObservableList<ImpressionNote>>().indexWhere((note) => note.id == id);
     if (index != -1) {
-      GetIt.I<ObservableList<ImpressionNote>>()[id] = ImpressionNote(
+      GetIt.I<ObservableList<ImpressionNote>>()[index] = ImpressionNote(
           id: oldImpressionNote.id,
           description: newDescription,
           seriesImage: newImage,

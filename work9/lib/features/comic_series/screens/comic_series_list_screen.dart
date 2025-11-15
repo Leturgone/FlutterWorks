@@ -14,7 +14,7 @@ class ComicSeriesListScreen extends StatelessWidget {
   final bool usual;
   final Function(String selectedImage)? onSelectImage;
 
-  ComicSeriesListScreen({Key? key, required this.usual, this.onSelectImage}) : super(key: key) {
+  ComicSeriesListScreen({super.key, required this.usual, this.onSelectImage}) {
     store.loadSeries(); // Загружаем список при создании
   }
 

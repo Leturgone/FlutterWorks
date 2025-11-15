@@ -28,6 +28,7 @@ abstract class _ImpressionNotesListStore with Store {
   @action
   void removeNote(int id) {
     impressionNotes?.removeWhere((note) => note.id == id);
+    GetIt.I<ObservableList<ImpressionNote>>().removeWhere((note) => note.id == id);
   }
 
   @action
