@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:work10/features/impression_note/models/impression_note.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ImpressionNoteAboutView extends StatelessWidget {
   final ImpressionNote impressionNote;
@@ -16,11 +17,13 @@ class ImpressionNoteAboutView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.network(
-              impressionNote.seriesImage,
+            CachedNetworkImage(
+              imageUrl: impressionNote.seriesImage,
               width: 150,
               height: 150,
               fit: BoxFit.cover,
+              placeholder: (context, url) => CircularProgressIndicator(),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
             SizedBox(height: 16),
             Text(

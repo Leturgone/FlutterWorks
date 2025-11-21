@@ -1,13 +1,10 @@
 
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-
 import '../models/impression_note.dart';
 import '../store/impression_note_form_store.dart';
+import '../widgets/impression_note_form_view.dart';
 
 class ImpressionNoteFormScreen extends StatelessWidget {
   final int id;
@@ -39,93 +36,29 @@ class ImpressionNoteFormScreen extends StatelessWidget {
         title: const Text('Форма заметки о впечатлении'),
       ),
       body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () => _onImageTap(context, store),
-                child: Observer(
-                  builder: (context) => store.seriesCover != null
-                      ? Image.network(
-                    store.seriesCover!,
-                    width: 150,
-                    height: 150,
-                    fit: BoxFit.cover,
-                  )
-                      : Container(
-                    width: 150,
-                    height: 150,
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.add_a_photo, size: 50),
-                  ),
-                ),
-              ),
-              Observer(
-                builder: (context) => store.coverError != null
-                    ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    store.coverError!,
-                    style: const TextStyle(
-                      color: Colors.red,
-                      fontSize: 12,
-                    ),
-                  ),
-                )
-                    : const SizedBox(),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Observer(
-                  builder: (context) => TextField(
-                    controller: TextEditingController(text: store.description)
-                      ..selection = TextSelection.collapsed(
-                        offset: store.description.length,
-                      ),
-                    onChanged: store.setDescription,
-                    decoration: InputDecoration(
-                      labelText: 'Впечатление',
-                      border: const OutlineInputBorder(),
-                      errorText: store.descriptionError,
-                    ),
-                    maxLines: null,
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: () => _save(context, store),
-                    child: const Text('Сохранить'),
-                  ),
-                  const SizedBox(width: 16),
-                  ElevatedButton(
-                    onPressed: () => context.pop(),
-                    child: const Text('Отмена'),
-                  ),
-                ],
-              ),
-            ],
+        child: Observer(builder: (_) => SingleChildScrollView(
+          child: ImpressionNoteForm(
+            description: store.description,
+            seriesCover: store.seriesCover,
+            coverError: store.coverError,
+            descriptionError: store.descriptionError,
+            onImageTapComic: () => _onImageTap(context, store, "comic_series"),
+            onImageTapGame: () => _onImageTap(context, store, "game"),
+            onImageTapMovie: () => _onImageTap(context, store, "movie"),
+            onDescriptionChanged: store.setDescription,
+            onSave: () => _save(context, store),
+            onCancel: () => context.pop(),
           ),
         ),
-      ),
+        )
+      )
     );
   }
 
-  void _initializeStore(ImpressionNoteFormStore store) {
-    if (impressionNote != null) {
-      store.setDescription(impressionNote!.description);
-      store.setSeriesCover(impressionNote!.seriesImage);
-    } else if (selectedCover != null) {
-      store.setSeriesCover(selectedCover!);
-    }
-  }
 
-  void _onImageTap(BuildContext context, ImpressionNoteFormStore store) {
+  void _onImageTap(BuildContext context, ImpressionNoteFormStore store, String cat) {
     if (store.seriesCover == null || store.seriesCover!.isEmpty) {
-      context.push('/comic_series_choose', extra: (String selectedImage) {
+      context.push('/${cat}_choose', extra: (String selectedImage) {
         final args = {
           'id': id,
           'selectedCover': selectedImage,
