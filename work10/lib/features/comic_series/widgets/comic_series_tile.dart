@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:work10/features/comic_series/models/comic_series.dart';
 
@@ -20,11 +21,13 @@ class ComicSeriesTile extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         child: ListTile(
           onTap: () => onTap(series),
-          leading: Image.network(
-            series.image,
+          leading: CachedNetworkImage(
+            imageUrl: series.image,
             width: 50,
             height: 50,
             fit: BoxFit.cover,
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           title: Text(
             series.title,
