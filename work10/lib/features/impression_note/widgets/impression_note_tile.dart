@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:work10/features/impression_note/models/impression_note.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ImpressionNoteTile extends StatelessWidget {
   final ImpressionNote note;
@@ -25,11 +25,13 @@ class ImpressionNoteTile extends StatelessWidget {
         margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         child: ListTile(
           onTap: () => onTap(note),
-          leading: Image.network(
-            note.seriesImage,
+          leading: CachedNetworkImage(
+            imageUrl: note.seriesImage,
             width: 50,
             height: 50,
             fit: BoxFit.cover,
+            placeholder: (context, url) => CircularProgressIndicator(),
+            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           title: Text(
             "Заметка о впечталении ${note.id}",
