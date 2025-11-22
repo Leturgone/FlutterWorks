@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import '../models/impression_note.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ImpressionNoteForm extends StatelessWidget {
   final String description;
@@ -45,7 +46,13 @@ class ImpressionNoteForm extends StatelessWidget {
       children: [
         // Изображение без обработки нажатия
         seriesCover != null
-            ? Image.network(seriesCover!, width: 150, height: 150, fit: BoxFit.cover,
+            ? CachedNetworkImage(
+          imageUrl: seriesCover!,
+          width: 150,
+          height: 150,
+          fit: BoxFit.cover,
+          placeholder: (context, url) => CircularProgressIndicator(),
+          errorWidget: (context, url, error) => Icon(Icons.error),
         ): Container(
           width: 150,
           height: 150,
