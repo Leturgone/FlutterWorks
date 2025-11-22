@@ -19,7 +19,7 @@ abstract class _ProfileStore with Store {
     user = User(
       id: 1,
       username: 'comic_fan',
-      notesCount: 15,
+      notesCount: 2,
     );
     isLoading = false;
   }
