@@ -9,40 +9,41 @@ class ComicSeriesAboutView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CachedNetworkImage(
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Center(
+            child: CachedNetworkImage(
               imageUrl: series.image,
-              width: 150,
-              height: 150,
+              width: 200,
+              height: 200,
               fit: BoxFit.cover,
               placeholder: (context, url) => CircularProgressIndicator(),
               errorWidget: (context, url, error) => Icon(Icons.error),
             ),
-            SizedBox(height: 16),
-            Text(
-              series.title,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8.0),
-            Text(
-              'Writer: ${series.writer}',
-              style: TextStyle(fontSize: 16, fontStyle: FontStyle.italic),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(
-                series.description ?? 'Нет описания',
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16),
-              ),
-            ),
-            SizedBox(height: 24),
-          ],
-        ),
+          ),
+          SizedBox(height: 16),
+          Text(
+            series.title,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.person, size: 16),
+              SizedBox(width: 4),
+              Text('Автор: ${series.writer}'),
+            ],
+          ),
+          SizedBox(height: 16),
+          Text(
+            series.description ?? 'Нет описания',
+            style: TextStyle(fontSize: 16),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
