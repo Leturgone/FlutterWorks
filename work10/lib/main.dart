@@ -9,7 +9,7 @@ void main() {
   ObservableList<ImpressionNote> impressionNotes = ObservableList.of([
     ImpressionNote(
       id: 0,
-      seriesImage: "https://i.annihil.us/u/prod/marvel/i/mg/1/d0/519bad24bebcd.jpg",
+      image: "https://i.annihil.us/u/prod/marvel/i/mg/1/d0/519bad24bebcd.jpg",
       description: "Запись",
     ),
   ]);

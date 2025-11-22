@@ -1,12 +1,12 @@
 class ImpressionNote{
   final  int id;
-  final  String seriesImage;
+  final  String image;
   final String description;
   final DateTime createdAt;
 
   ImpressionNote({
     required this.id,
-    required this.seriesImage,
+    required this.image,
     required this.description,
     DateTime? createdAt
   }): createdAt = createdAt?? DateTime.now();
@@ -14,7 +14,7 @@ class ImpressionNote{
   ImpressionNote copyWith({String? description}) {
     return ImpressionNote(
       id: id,
-      seriesImage: seriesImage,
+      image: image,
       description: description ?? this.description,
       createdAt: DateTime.now(),
     );

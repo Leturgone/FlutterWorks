@@ -83,7 +83,7 @@ class ImpressionNoteFormScreen extends StatelessWidget {
     } else {
       final newImpressionNote = ImpressionNote(
         id: id,
-        seriesImage: store.seriesCover ?? '',
+        image: store.seriesCover ?? '',
         description: store.description,
         createdAt: DateTime.now(),
       );

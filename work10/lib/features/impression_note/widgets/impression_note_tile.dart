@@ -26,7 +26,7 @@ class ImpressionNoteTile extends StatelessWidget {
         child: ListTile(
           onTap: () => onTap(note),
           leading: CachedNetworkImage(
-            imageUrl: note.seriesImage,
+            imageUrl: note.image,
             width: 50,
             height: 50,
             fit: BoxFit.cover,

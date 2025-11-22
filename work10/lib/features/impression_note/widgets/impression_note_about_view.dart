@@ -18,7 +18,7 @@ class ImpressionNoteAboutView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CachedNetworkImage(
-              imageUrl: impressionNote.seriesImage,
+              imageUrl: impressionNote.image,
               width: 150,
               height: 150,
               fit: BoxFit.cover,

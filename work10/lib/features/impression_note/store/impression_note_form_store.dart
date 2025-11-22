@@ -38,7 +38,7 @@ abstract class _ImpressionNoteFormStore with Store {
   @action
   void seData(ImpressionNote note){
     description = note.description;
-    seriesCover = note.seriesImage;
+    seriesCover = note.image;
   }
 
   @action
@@ -66,7 +66,7 @@ abstract class _ImpressionNoteFormStore with Store {
       GetIt.I<ObservableList<ImpressionNote>>()[index] = ImpressionNote(
           id: oldImpressionNote.id,
           description: newDescription,
-          seriesImage: newImage,
+          image: newImage,
           createdAt: DateTime.now()
       );
     }
