@@ -1,12 +1,12 @@
 import 'package:work11/core/models/user.dart';
 import 'package:work11/domain/interfaces/repositories/auth_repository.dart';
 
-class GetProfileUseCase{
+class LoginUseCase {
   final AuthRepository repository ;
 
-  GetProfileUseCase(this.repository);
+  LoginUseCase(this.repository);
 
-  Future<User> execute(int id) {
-    return repository.getProfile(id);
+  Future<User> execute(String login, String password) {
+    return repository.login(login, password);
   }
 }
