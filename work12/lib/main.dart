@@ -1,122 +1,77 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
+import 'package:work12/data/datasources/api/auth_datasource.dart';
+import 'package:work12/data/datasources/api/comic_series_datasource.dart';
+import 'package:work12/data/datasources/api/games_datasource.dart';
+import 'package:work12/data/datasources/api/movies_datastore.dart';
+import 'package:work12/data/datasources/api/news_datastore.dart';
+import 'package:work12/data/datasources/local/impression_note_datastore.dart';
+import 'package:work12/data/datasources/local/token_datasource.dart';
+import 'package:work12/data/repositories/auth_repository_impl.dart';
+import 'package:work12/data/repositories/comic_series_repository_impl.dart';
+import 'package:work12/data/repositories/games_repository_impl.dart';
+import 'package:work12/data/repositories/impression_note_repository_impl.dart';
+import 'package:work12/data/repositories/movies_repository_impl.dart';
+import 'package:work12/data/repositories/news_repository_impl.dart';
+import 'package:work12/domain/interfaces/repositories/auth_repository.dart';
+import 'package:work12/domain/interfaces/repositories/comic_series_repository.dart';
+import 'package:work12/domain/interfaces/repositories/games_repository.dart';
+import 'package:work12/domain/interfaces/repositories/impression_note_repository.dart';
+import 'package:work12/domain/interfaces/repositories/movies_repository.dart';
+import 'package:work12/domain/interfaces/repositories/news_repository.dart';
+import 'package:work12/domain/usecases/auth/get_profile_usecase.dart';
+import 'package:work12/domain/usecases/auth/login_usecase.dart';
+import 'package:work12/domain/usecases/auth/register_usecase.dart';
+import 'package:work12/domain/usecases/comic_series/get_comic_series_about_usecase.dart';
+import 'package:work12/domain/usecases/comic_series/get_comic_series_list_usecase.dart';
+import 'package:work12/domain/usecases/games/get_game_about_usecase.dart';
+import 'package:work12/domain/usecases/games/get_game_list_usecase.dart';
+import 'package:work12/domain/usecases/impression_note/create_note_usecase.dart';
+import 'package:work12/domain/usecases/impression_note/delete_note_usecase.dart';
+import 'package:work12/domain/usecases/impression_note/edit_note_usecase.dart';
+import 'package:work12/domain/usecases/impression_note/get_note_about_usecase.dart';
+import 'package:work12/domain/usecases/impression_note/get_notes_list_usecase.dart';
+import 'package:work12/domain/usecases/impression_note/sort_notes_usecase.dart';
+import 'package:work12/domain/usecases/movies/get_movie_about_usecase.dart';
+import 'package:work12/domain/usecases/movies/get_movies_list_usecase.dart';
+import 'package:work12/domain/usecases/news/get_news_about_usecase.dart';
+import 'package:work12/domain/usecases/news/get_news_usecase.dart';
+
+import 'ui/app.dart';
 
 void main() {
-  runApp(const MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  GetIt.I.registerSingleton<AuthRepository>((AuthRepositoryImpl(AuthDataSource(),LocalAuthDataSource())));
+  GetIt.I.registerSingleton<ComicSeriesRepository>(ComicSeriesRepositoryImpl(ComicSeriesDataSource()));
+  GetIt.I.registerSingleton<GamesRepository>(GamesRepositoryImpl(GamesDataSource()));
+  GetIt.I.registerSingleton<ImpressionNoteRepository>(ImpressionNoteRepositoryImpl(ImpressionNoteDataSource()));
+  GetIt.I.registerSingleton<MoviesRepository>(MoviesRepositoryImpl(MoviesDataSource()));
+  GetIt.I.registerSingleton<NewsRepository>(NewsRepositoryImpl(NewsDataSource()));
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+  GetIt.I.registerSingleton<GetProfileUseCase>(GetProfileUseCase(GetIt.I<AuthRepository>()));
+  GetIt.I.registerSingleton<LoginUseCase>(LoginUseCase(GetIt.I<AuthRepository>()));
+  GetIt.I.registerSingleton<RegisterUseCase>(RegisterUseCase(GetIt.I<AuthRepository>()));
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  GetIt.I.registerSingleton<GetComicSeriesAboutUseCase>(GetComicSeriesAboutUseCase(GetIt.I<ComicSeriesRepository>()));
+  GetIt.I.registerSingleton<GetComicSeriesListUseCase>(GetComicSeriesListUseCase(GetIt.I<ComicSeriesRepository>()));
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
+  GetIt.I.registerSingleton<GetMovieAboutUseCase>(GetMovieAboutUseCase(GetIt.I<MoviesRepository>()));
+  GetIt.I.registerSingleton<GetMoviesListUseCase>(GetMoviesListUseCase(GetIt.I<MoviesRepository>()));
 
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  GetIt.I.registerSingleton<GetNewsAboutUseCase>(GetNewsAboutUseCase(GetIt.I<NewsRepository>()));
+  GetIt.I.registerSingleton<GetNewsUseCase>(GetNewsUseCase(GetIt.I<NewsRepository>()));
 
-  final String title;
+  GetIt.I.registerSingleton<GetGameAboutUseCase>(GetGameAboutUseCase(GetIt.I<GamesRepository>()));
+  GetIt.I.registerSingleton<GetGameListUseCase>(GetGameListUseCase(GetIt.I<GamesRepository>()));
 
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+  GetIt.I.registerSingleton<CreateNoteUseCase>(CreateNoteUseCase(GetIt.I<ImpressionNoteRepository>()));
+  GetIt.I.registerSingleton<DeleteNoteUseCase>(DeleteNoteUseCase(GetIt.I<ImpressionNoteRepository>()));
+  GetIt.I.registerSingleton<EditNoteUseCase>(EditNoteUseCase(GetIt.I<ImpressionNoteRepository>()));
+  GetIt.I.registerSingleton<GetNoteAboutUseCase>(GetNoteAboutUseCase(GetIt.I<ImpressionNoteRepository>()));
+  GetIt.I.registerSingleton<GetNotesListUseCase>(GetNotesListUseCase(GetIt.I<ImpressionNoteRepository>()));
+  GetIt.I.registerSingleton<SortNotesUseCase>(SortNotesUseCase(GetIt.I<ImpressionNoteRepository>()));
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
+  runApp(MyApp());
 }
