@@ -6,7 +6,7 @@ class GetProfileUseCase{
 
   GetProfileUseCase(this.repository);
 
-  Future<User?> execute(int id) {
-    return repository.getProfile(id);
+  Future<User?> execute() {
+    return repository.getProfileByToken();
   }
 }
