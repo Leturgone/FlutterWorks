@@ -6,7 +6,7 @@ class LoginUseCase {
 
   LoginUseCase(this.repository);
 
-  Future<User> execute(String login, String password) {
+  Future<User?> execute(String login, String password) {
     return repository.login(login, password);
   }
 }
