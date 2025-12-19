@@ -6,14 +6,14 @@ import 'dart:io';
 
 part 'impression_note_dao.g.dart';
 
-class ImpressionNotes extends Table {
+class ImpressionNotesTable extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get image => text()();
   TextColumn get description => text()();
   DateTimeColumn get createdAt => dateTime().withDefault(currentDateAndTime)();
 }
 
-@DriftDatabase(tables: [ImpressionNotes])
+@DriftDatabase(tables: [ImpressionNotesTable])
 class ImpressionNoteDatabase extends _$ImpressionNoteDatabase {
   ImpressionNoteDatabase() : super(_openConnection());
 

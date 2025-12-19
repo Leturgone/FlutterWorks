@@ -1,55 +1,94 @@
+import 'package:drift/drift.dart';
+
 import '../../../core/models/impression_note.dart';
+import 'impression_note_dao.dart';
 
 class ImpressionNoteDataSource {
-  final List<ImpressionNote> _notes = [
-    ImpressionNote(
-      id: 0,
-      image: "https://i.annihil.us/u/prod/marvel/i/mg/1/d0/519bad24bebcd.jpg",
-      description: "Запись",
-    ),
-  ];
+  late ImpressionNoteDatabase _database;
+
+  ImpressionNoteDataSource() {
+    _database = ImpressionNoteDatabase();
+  }
 
   Future<List<ImpressionNote>> getAllNotes() async {
-    await Future.delayed(Duration(milliseconds: 500)); // Имитация задержки
-    return List<ImpressionNote>.from(_notes);
+    final query = _database.select(_database.impressionNotesTable);
+    final notes = await query.get();
+
+    return notes.map((row) => ImpressionNote(
+      id: row.id,
+      image: row.image,
+      description: row.description,
+      createdAt: row.createdAt,
+    )).toList();
   }
 
   Future<ImpressionNote> getNoteById(int id) async {
-    await Future.delayed(Duration(milliseconds: 300));
-    try {
-      return _notes.firstWhere((note) => note.id == id);
-    } catch (e) {
+    final query = _database.select(_database.impressionNotesTable)
+      ..where((tbl) => tbl.id.equals(id));
+
+    final note = await query.getSingleOrNull();
+
+    if (note == null) {
       throw Exception('Note with id $id not found');
     }
+
+    return ImpressionNote(
+      id: note.id,
+      image: note.image,
+      description: note.description,
+      createdAt: note.createdAt,
+    );
   }
 
   Future<bool> updateNote(int id, ImpressionNote editedNote) async {
-    await Future.delayed(Duration(milliseconds: 400));
-    final index = _notes.indexWhere((note) => note.id == id);
-    if (index != -1) {
-      _notes[index] = editedNote;
-      return true;
-    }
-    return false;
+    final rowsUpdated = await (_database.update(_database.impressionNotesTable)
+      ..where((tbl) => tbl.id.equals(id))
+    ).write(ImpressionNotesTableCompanion(
+      image: Value(editedNote.image),
+      description: Value(editedNote.description),
+      createdAt: Value(editedNote.createdAt),
+    ));
+
+    return rowsUpdated > 0;
   }
 
   Future<bool> deleteNote(int id) async {
-    await Future.delayed(Duration(milliseconds: 300));
-    final initialLength = _notes.length;
-    _notes.removeWhere((note) => note.id == id);
-    return _notes.length < initialLength;
+    final rowsDeleted = await (_database.delete(_database.impressionNotesTable)
+      ..where((tbl) => tbl.id.equals(id))
+    ).go();
+
+    return rowsDeleted > 0;
   }
 
   Future<bool> createNote(ImpressionNote note) async {
-    await Future.delayed(Duration(milliseconds: 400));
-    _notes.add(note);
-    return true;
+    final id = await _database.into(_database.impressionNotesTable).insert(
+      ImpressionNotesTableCompanion.insert(
+        image: note.image,
+        description: note.description,
+        createdAt: Value(note.createdAt),
+      ),
+    );
+
+    return id > 0;
   }
 
   Future<List<ImpressionNote>> getSortedNotes() async {
-    await Future.delayed(Duration(milliseconds: 200));
-    final sortedNotes = List<ImpressionNote>.from(_notes);
-    sortedNotes.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-    return sortedNotes;
+    final query = _database.select(_database.impressionNotesTable)
+      ..orderBy([
+            (t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.desc)
+      ]);
+
+    final notes = await query.get();
+
+    return notes.map((row) => ImpressionNote(
+      id: row.id,
+      image: row.image,
+      description: row.description,
+      createdAt: row.createdAt,
+    )).toList();
+  }
+
+  Future<void> close() async {
+    await _database.close();
   }
 }
