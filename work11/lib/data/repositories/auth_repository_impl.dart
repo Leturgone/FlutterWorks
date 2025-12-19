@@ -1,34 +1,45 @@
 
 import 'package:work11/core/models/user.dart';
-import 'package:work11/data/datasources/auth_datasource.dart';
+import 'package:work11/data/datasources/api/auth_datasource.dart';
 import 'package:work11/domain/interfaces/repositories/auth_repository.dart';
+
+import '../datasources/local/token_datasource.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthDataSource _dataSource;
+  final LocalAuthDataSource _localDataSource;
 
-  AuthRepositoryImpl(this._dataSource);
+  AuthRepositoryImpl(this._dataSource, this._localDataSource);
 
   @override
-  Future<User> login(String login, String password) async {
+  Future<String> login(String login, String password) async {
     try {
       final user = await _dataSource.login(login, password);
       if (user == null) {
         throw Exception('Неверный email или пароль');
       }
-      return user;
+      final result = await _localDataSource.saveToken(user.token);
+      if (result == null) {
+        throw Exception('Неверный email или пароль');
+      }
+      return result;
     } catch (e) {
       throw Exception('Ошибка авторизации: $e');
     }
   }
 
   @override
-  Future<User> register(String name, String email, String password) async {
+  Future<String> register(String name, String email, String password) async {
     try {
       final user = await _dataSource.register(name, email, password, password);
       if (user == null) {
         throw Exception('Ошибка регистрации');
       }
-      return user;
+      final result = await _localDataSource.saveToken(user.token);
+      if (result == null) {
+        throw Exception('Неверный email или пароль');
+      }
+      return result;
     } catch (e) {
       rethrow;
     }
@@ -48,8 +59,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
 
-  Future<User?> getProfileByToken(String token) async {
+  Future<User?> getProfileByToken() async {
     try {
+      final token = await _localDataSource.getToken();
+      if (token == null) return null;
+
       return await _dataSource.getProfileByToken(token);
     } catch (e) {
       return null;

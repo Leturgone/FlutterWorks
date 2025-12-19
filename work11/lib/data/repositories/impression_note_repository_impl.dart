@@ -2,7 +2,7 @@ import 'dart:async';
 
 import '../../core/models/impression_note.dart';
 import '../../domain/interfaces/repositories/impression_note_repository.dart';
-import '../datasources/impression_note_datastore.dart';
+import '../datasources/local/impression_note_datastore.dart';
 
 class ImpressionNoteRepositoryImpl implements ImpressionNoteRepository {
   final ImpressionNoteDataSource _localDataSource;

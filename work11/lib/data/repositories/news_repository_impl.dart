@@ -1,6 +1,7 @@
 import 'package:work11/core/models/news.dart';
-import 'package:work11/data/datasources/news_datastore.dart';
 import 'package:work11/domain/interfaces/repositories/news_repository.dart';
+
+import '../datasources/api/news_datastore.dart';
 
 class NewsRepositoryImpl implements NewsRepository {
   final NewsDataSource _dataSource;

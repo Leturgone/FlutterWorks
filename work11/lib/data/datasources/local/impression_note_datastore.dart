@@ -1,7 +1,7 @@
 // impression_note_local_data_source.dart
 import 'package:get_it/get_it.dart';
 
-import '../../core/models/impression_note.dart';
+import '../../../core/models/impression_note.dart';
 
 class ImpressionNoteDataSource {
   final List<ImpressionNote> _notes = [

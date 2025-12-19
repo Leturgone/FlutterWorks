@@ -1,7 +1,8 @@
 
 import 'package:work11/core/models/movie.dart';
-import 'package:work11/data/datasources/movies_datastore.dart';
 import 'package:work11/domain/interfaces/repositories/movies_repository.dart';
+
+import '../datasources/api/movies_datastore.dart';
 
 class MoviesRepositoryImpl implements MoviesRepository {
   final MoviesDataSource _dataSource;

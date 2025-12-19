@@ -1,8 +1,9 @@
 
-import 'package:work11/data/datasources/games_datasource.dart';
+
 import 'package:work11/domain/interfaces/repositories/games_repository.dart';
 
 import '../../core/models/game.dart';
+import '../datasources/api/games_datasource.dart';
 
 class GamesRepositoryImpl implements GamesRepository {
   final GamesDataSource _dataSource;
