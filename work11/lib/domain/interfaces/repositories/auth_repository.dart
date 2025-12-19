@@ -2,8 +2,8 @@
 import 'package:work11/core/models/user.dart';
 
 abstract class AuthRepository {
-  Future<User?> login(String login, String password);
-  Future<User?> register(String name, String login, String password);
+  Future<String?> login(String login, String password);
+  Future<String?> register(String name, String login, String password);
   Future<User?> getProfile(int id);
-  Future<User?> getProfileByToken(String token);
+  Future<User?> getProfileByToken();
 }
