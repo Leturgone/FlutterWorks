@@ -6,5 +6,6 @@ abstract class ImpressionNoteRepository {
   Future<ImpressionNote> getImpressionNoteById(int id);
   Future<bool> editImpressionNoteById(int id, ImpressionNote editedNote);
   Future<bool> deleteImpressionNoteById(int id);
-  Future<bool> addImpressionNoteById(ImpressionNote note);
+  Future<bool> createImpressionNote(ImpressionNote note);
+  Future<List<ImpressionNote>> sort();
 }
