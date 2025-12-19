@@ -20,6 +20,7 @@ import 'package:work12/domain/interfaces/repositories/games_repository.dart';
 import 'package:work12/domain/interfaces/repositories/impression_note_repository.dart';
 import 'package:work12/domain/interfaces/repositories/movies_repository.dart';
 import 'package:work12/domain/interfaces/repositories/news_repository.dart';
+import 'package:work12/domain/usecases/auth/auto_login_usecase.dart';
 import 'package:work12/domain/usecases/auth/get_profile_usecase.dart';
 import 'package:work12/domain/usecases/auth/login_usecase.dart';
 import 'package:work12/domain/usecases/auth/register_usecase.dart';
@@ -52,6 +53,7 @@ void main() {
   GetIt.I.registerSingleton<GetProfileUseCase>(GetProfileUseCase(GetIt.I<AuthRepository>()));
   GetIt.I.registerSingleton<LoginUseCase>(LoginUseCase(GetIt.I<AuthRepository>()));
   GetIt.I.registerSingleton<RegisterUseCase>(RegisterUseCase(GetIt.I<AuthRepository>()));
+  GetIt.I.registerSingleton<AutoLoginUseCase>(AutoLoginUseCase(GetIt.I<AuthRepository>()));
 
   GetIt.I.registerSingleton<GetComicSeriesAboutUseCase>(GetComicSeriesAboutUseCase(GetIt.I<ComicSeriesRepository>()));
   GetIt.I.registerSingleton<GetComicSeriesListUseCase>(GetComicSeriesListUseCase(GetIt.I<ComicSeriesRepository>()));

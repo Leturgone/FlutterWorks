@@ -5,32 +5,13 @@ import 'dart:math';
 class AuthDataSource {
 
   final List<User> _users = [
-    User(
-      id: 1,
-      username: 'user@example.com',
-      name: 'Test User',
-      notesCount: 5,
-      token: _generateToken(),
-    ),
-    User(
-      id: 2,
-      username: 'john@example.com',
-      name: 'John Doe',
-      notesCount: 3,
-      token: _generateToken(),
-    ),
+    User(id: 3,
+        username:'11', name: '11', notesCount: 0, token: '123')
   ];
 
   // Генерация простого токена (строка)
   static String _generateToken() {
-    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    final random = Random();
-    return String.fromCharCodes(
-      Iterable.generate(
-        32,
-            (_) => chars.codeUnitAt(random.nextInt(chars.length)),
-      ),
-    );
+    return '123';
   }
 
   // Логин
@@ -75,21 +56,6 @@ class AuthDataSource {
       throw Exception('Пароль должен содержать минимум 8 символов');
     }
 
-    // Проверяем, существует ли пользователь с таким email
-    final existingUser = _users.firstWhere(
-          (user) => user.username == email,
-      orElse: () => User(
-        id: -1,
-        username: '',
-        name: '',
-        notesCount: 0,
-        token: '',
-      ),
-    );
-
-    if (existingUser.id != -1) {
-      throw Exception('Пользователь с таким email уже существует');
-    }
 
     // Создаем нового пользователя
     final newUser = User(
