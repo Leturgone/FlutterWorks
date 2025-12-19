@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
-import 'app.dart';
+import 'ui/app.dart';
 import 'core/models/impression_note.dart';
 
 void main() {
