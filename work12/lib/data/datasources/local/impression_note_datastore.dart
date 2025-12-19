@@ -1,5 +1,3 @@
-import 'package:get_it/get_it.dart';
-
 import '../../../core/models/impression_note.dart';
 
 class ImpressionNoteDataSource {
