@@ -1,5 +1,5 @@
 
-import '../../core/models/comic_series.dart';
+import '../../../core/models/comic_series.dart';
 
 class ComicSeriesDataSource{
 

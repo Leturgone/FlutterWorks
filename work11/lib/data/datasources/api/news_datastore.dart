@@ -1,6 +1,6 @@
 
 
-import '../../core/models/news.dart';
+import '../../../core/models/news.dart';
 
 
 class NewsDataSource{

@@ -1,7 +1,8 @@
 
 
-import '../../core/models/movie.dart';
 
+
+import '../../../core/models/movie.dart';
 
 class MoviesDataSource{
 
