@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:work11/domain/usecases/impression_note/create_note_usecase.dart';
+import 'package:work11/domain/usecases/impression_note/edit_note_usecase.dart';
 
 import '../../../../core/models/impression_note.dart';
 
@@ -23,6 +25,9 @@ abstract class _ImpressionNoteFormStore with Store {
 
   @observable
   String? coverError;
+
+  final CreateNoteUseCase createNoteUseCase = GetIt.I<CreateNoteUseCase>();
+  final EditNoteUseCase editNoteUseCase = GetIt.I<EditNoteUseCase>();
 
   @action
   void setDescription(String value) {
@@ -62,20 +67,27 @@ abstract class _ImpressionNoteFormStore with Store {
   @action
   void updateNote(int id, ImpressionNote note, String newDescription, String newImage) {
     final oldImpressionNote = note;
-    final index = GetIt.I<ObservableList<ImpressionNote>>().indexWhere((note) => note.id == id);
-    if (index != -1) {
-      GetIt.I<ObservableList<ImpressionNote>>()[index] = ImpressionNote(
-          id: oldImpressionNote.id,
-          description: newDescription,
-          image: newImage,
-          createdAt: DateTime.now()
-      );
-    }
+    final newNote = ImpressionNote(
+        id: oldImpressionNote.id,
+        description: newDescription,
+        image: newImage,
+        createdAt: DateTime.now()
+    );
+    // final index = GetIt.I<ObservableList<ImpressionNote>>().indexWhere((note) => note.id == id);
+    // if (index != -1) {
+    //   GetIt.I<ObservableList<ImpressionNote>>()[index] = ImpressionNote(
+    //       id: oldImpressionNote.id,
+    //       description: newDescription,
+    //       image: newImage,
+    //       createdAt: DateTime.now()
+    //   );
+    // }
+    editNoteUseCase.execute(id, newNote);
   }
 
   @action
   void addNote(ImpressionNote note) {
-    GetIt.I<ObservableList<ImpressionNote>>().add(note);
+   createNoteUseCase.execute(note);
   }
 
 }

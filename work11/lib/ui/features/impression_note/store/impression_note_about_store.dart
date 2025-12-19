@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:work11/domain/usecases/impression_note/get_note_about_usecase.dart';
 
 import '../../../../core/models/impression_note.dart';
 
@@ -16,14 +17,14 @@ abstract class _ImpressionNoteAboutStore with Store {
   @observable
   bool isLoading = false;
 
+  final GetNoteAboutUseCase getNoteAboutUseCase = GetIt.I<GetNoteAboutUseCase>();
 
   @action
   Future<void> loadNoteById(int id) async {
     isLoading = true;
 
-    await Future.delayed(Duration(seconds: 1)); // Эмуляция загрузки из БД
 
-    final note = GetIt.I<ObservableList<ImpressionNote>>().firstWhere((note)=>note.id == id);
+    final note = await getNoteAboutUseCase.execute(id);
 
     impressionNote = note;
     isLoading = false;

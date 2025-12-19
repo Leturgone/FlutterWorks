@@ -1,5 +1,7 @@
 
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:work11/domain/usecases/games/get_game_about_usecase.dart';
 
 import '../../../../core/models/game.dart';
 
@@ -14,33 +16,13 @@ abstract class _GameAboutStore with Store {
   @observable
   bool isLoading = false;
 
+  final GetGameAboutUseCase getGameAboutUseCase = GetIt.I<GetGameAboutUseCase>();
+
   @action
   Future loadGame(int gameId) async {
     isLoading = true;
-    await Future.delayed(Duration(seconds: 2));
-    game = mockFetchGame(gameId);
+    game = await getGameAboutUseCase.execute(gameId);
     isLoading = false;
   }
 
-  Game mockFetchGame(int id) {
-    switch(id){
-      case 1 : return Game(
-        id: 1,
-        title: "Spider-Man: Miles Morales",
-        description: "Experience the rise of Miles Morales as the new hero masters incredible, explosive new powers to become his own Spider-Man.",
-        image: "https://cdn.marvel.com/content/2x/msmmm_lob_crd_02_0.jpg",
-        developer: "Insomniac Games",
-        platform: "PS5/PS4/PC",
-      );
-      case 2: return Game(
-        id: 2,
-        title: "Marvel's Avengers",
-        description: "Assemble your team of Earth's Mightiest Heroes and embrace your powers in this epic action-adventure.",
-        image: "https://cdn.marvel.com/content/2x/marvelsavengers_lob_crd_01_0.jpg",
-        developer: "Crystal Dynamics",
-        platform: "Multiplatform",
-      );
-    }
-    throw Error();
-  }
 }

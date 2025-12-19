@@ -1,10 +1,15 @@
 
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:work11/domain/usecases/auth/login_usecase.dart';
 part 'login_store.g.dart';
 
 class LoginStore = _LoginStore with _$LoginStore;
 
 abstract class _LoginStore with Store {
+
+  final LoginUseCase loginUseCase  = GetIt.I<LoginUseCase>();
+
   @observable
   bool isLoading = false;
 
@@ -32,14 +37,18 @@ abstract class _LoginStore with Store {
     isLoading = true;
     error = null;
 
-    await Future.delayed(Duration(seconds: 2)); // Имитация API запроса
+    try {
+      final result = await loginUseCase.execute(email, password);
 
-    // Тестовые данные для входа
-    if (email == 'user@example.com' && password == 'password') {
-      isLoading = false;
-      return true;
-    } else {
-      error = 'Неверный email или пароль';
+      if (result!=null) {
+        isLoading = false;
+        return true;
+      } else {
+        isLoading = false;
+        return false;
+      }
+    } catch (e) {
+      error = 'Неизвестная ошибка';
       isLoading = false;
       return false;
     }

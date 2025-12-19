@@ -3,7 +3,7 @@ import 'dart:async';
 
 import '../../core/models/comic_series.dart';
 import '../../domain/interfaces/repositories/comic_series_repository.dart';
-import '../datasources/comic_series_datasource.dart';
+import '../datasources/api/comic_series_datasource.dart';
 
 class ComicSeriesRepositoryImpl implements ComicSeriesRepository {
   final ComicSeriesDataSource _dataSource;

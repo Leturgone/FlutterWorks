@@ -1,10 +1,15 @@
+import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
+import 'package:work11/domain/usecases/auth/register_usecase.dart';
 
 part 'register_store.g.dart';
 
 class RegisterStore = _RegisterStore with _$RegisterStore;
 
 abstract class _RegisterStore with Store {
+
+  final RegisterUseCase registerUseCase  = GetIt.I<RegisterUseCase>();
+
   @observable
   bool isLoading = false;
 
@@ -47,25 +52,34 @@ abstract class _RegisterStore with Store {
   Future<bool> register() async {
     isLoading = true;
     error = null;
+    try{
+      final result = await registerUseCase.execute(username,email, password);
 
-    await Future.delayed(Duration(seconds: 2)); // Имитация API запроса
+      // Валидация
+      if (password != confirmPassword) {
+        error = 'Пароли не совпадают';
+        isLoading = false;
+        return false;
+      }
 
-    // Валидация
-    if (password != confirmPassword) {
-      error = 'Пароли не совпадают';
+      if (password.length < 8) {
+        error = 'Пароль должен быть не менее 8 символов';
+        isLoading = false;
+        return false;
+      }
+
+      if (result!=null) {
+        isLoading = false;
+        return true;
+      } else {
+        isLoading = false;
+        return false;
+      }
+    }catch (e) {
+      error = 'Неизвестная ошибка';
       isLoading = false;
       return false;
     }
 
-    if (password.length < 8) {
-      error = 'Пароль должен быть не менее 8 символов';
-      isLoading = false;
-      return false;
-    }
-
-    // Успешная регистрация
-    isLoading = false;
-    return true;
   }
-
 }
